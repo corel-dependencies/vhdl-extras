@@ -339,102 +339,102 @@ use ieee.numeric_std.all;
 library extras;
 use extras.sizing.ceil_log2;
 
-library extras_2008;
-use extras_2008.common.all;
-use extras_2008.filtering.all;
-use extras_2008.pipelining.tapped_delay_line;
+-- library extras_2008;
+-- use extras_2008.common.all;
+-- use extras_2008.filtering.all;
+-- use extras_2008.pipelining.tapped_delay_line;
 
 
-entity fir_filter is
-  generic (
-    RESET_ACTIVE_LEVEL : std_ulogic := '1' --# Asynch. reset control level
-    );
-  port (
-    Clock : in std_ulogic;
-    Reset : in std_ulogic;
+-- entity fir_filter is
+--   generic (
+--     RESET_ACTIVE_LEVEL : std_ulogic := '1' --# Asynch. reset control level
+--     );
+--   port (
+--     Clock : in std_ulogic;
+--     Reset : in std_ulogic;
 
-    Coefficients : in signed_array;
+--     Coefficients : in signed_array;
 
-    Data_valid : in std_ulogic;
-    Data : in signed;
-    Busy : out std_ulogic;
+--     Data_valid : in std_ulogic;
+--     Data : in signed;
+--     Busy : out std_ulogic;
 
-    Result_valid : out std_ulogic;      
-    Result : out signed;
-    In_use : in std_ulogic
-    );
-end entity;
+--     Result_valid : out std_ulogic;
+--     Result : out signed;
+--     In_use : in std_ulogic
+--     );
+-- end entity;
 
 
-architecture rtl of fir_filter is
-  constant ACCUM_LEN : positive := Result'length +
-                                   ceil_log2(Coefficients'length) +
-                                   Coefficients'element'length;
-  signal accum : signed(ACCUM_LEN-1 downto 0);
+-- architecture rtl of fir_filter is
+--   constant ACCUM_LEN : positive := Result'length +
+--                                    ceil_log2(Coefficients'length) +
+--                                    Coefficients'element'length;
+--   signal accum : signed(ACCUM_LEN-1 downto 0);
 
-  signal din : std_ulogic_vector(Data'length-1 downto 0);
-  signal taps_sulv : sulv_array(0 to Coefficients'length-1)(Data'range);
-  signal taps : signed_array(0 to Coefficients'length-1)(Data'range);
+--   signal din : std_ulogic_vector(Data'length-1 downto 0);
+--   signal taps_sulv : sulv_array(0 to Coefficients'length-1)(Data'range);
+--   signal taps : signed_array(0 to Coefficients'length-1)(Data'range);
 
-  subtype filter_taps is integer range 0 to Coefficients'length-1;
-  signal ix : filter_taps;
-  signal shift_en, data_valid_dly : std_ulogic;
-begin
+--   subtype filter_taps is integer range 0 to Coefficients'length-1;
+--   signal ix : filter_taps;
+--   signal shift_en, data_valid_dly : std_ulogic;
+-- begin
 
-  din <= to_stdulogicvector(std_logic_vector(Data));
+--   din <= to_stdulogicvector(std_logic_vector(Data));
 
-  dl: tapped_delay_line
-    generic map (
-      RESET_ACTIVE_LEVEL => RESET_ACTIVE_LEVEL,
-      REGISTER_FIRST_STAGE => true
-    )
-    port map (
-      Clock => Clock,
-      Reset => Reset,
-      Enable => shift_en,
-      Data  => din,
-      Taps  => taps_sulv
-    );
-    
-  taps <= to_signed_array(taps_sulv);
+--   dl: tapped_delay_line
+--     generic map (
+--       RESET_ACTIVE_LEVEL => RESET_ACTIVE_LEVEL,
+--       REGISTER_FIRST_STAGE => true
+--     )
+--     port map (
+--       Clock => Clock,
+--       Reset => Reset,
+--       Enable => shift_en,
+--       Data  => din,
+--       Taps  => taps_sulv
+--     );
 
-  filt: process(Clock, Reset) is
-    variable prod : signed(Data'length + Coefficients'element'length - 1 downto 0);
-  begin
-    if Reset = RESET_ACTIVE_LEVEL then
-      ix <= filter_taps'high;
-      accum <= (others => '0');
-      Result <= (Result'range => '0');
-      Result_valid <= '0';
-      Busy <= '0';
-      --shift_en <= '0';
-      data_valid_dly <= '1';
-    elsif rising_edge(Clock) then
-      -- Multiply current tap with its coefficient
-      prod := taps(ix) * Coefficients(ix);
-      accum <= accum + resize(prod, accum'length);
+--   taps <= to_signed_array(taps_sulv);
 
-      Result_valid <= '0';
-      Busy <= '0';
-      --shift_en <= '0';
-      data_valid_dly <= Data_valid;
+--   filt: process(Clock, Reset) is
+--     variable prod : signed(Data'length + Coefficients'element'length - 1 downto 0);
+--   begin
+--     if Reset = RESET_ACTIVE_LEVEL then
+--       ix <= filter_taps'high;
+--       accum <= (others => '0');
+--       Result <= (Result'range => '0');
+--       Result_valid <= '0';
+--       Busy <= '0';
+--       --shift_en <= '0';
+--       data_valid_dly <= '1';
+--     elsif rising_edge(Clock) then
+--       -- Multiply current tap with its coefficient
+--       prod := taps(ix) * Coefficients(ix);
+--       accum <= accum + resize(prod, accum'length);
 
-      if ix /= 0 then -- Cycle through taps
-        ix <= ix - 1;
-        Busy <= '1';
-      elsif Data_valid = '1' and In_use = '0' then -- Done with each tap
-        ix <= filter_taps'high;
-        --shift_en <= '1';
-        Result <= accum(Coefficients'element'length + Result'length - 1 downto Coefficients'element'length);
-        Result_valid <= '1';
-        accum <= (others => '0'); -- Reset accumulator
-      end if;
-    end if;
-  end process;
-  
-  shift_en <= Data_valid and not data_valid_dly;
+--       Result_valid <= '0';
+--       Busy <= '0';
+--       --shift_en <= '0';
+--       data_valid_dly <= Data_valid;
 
-end architecture;
+--       if ix /= 0 then -- Cycle through taps
+--         ix <= ix - 1;
+--         Busy <= '1';
+--       elsif Data_valid = '1' and In_use = '0' then -- Done with each tap
+--         ix <= filter_taps'high;
+--         --shift_en <= '1';
+--         Result <= accum(Coefficients'element'length + Result'length - 1 downto Coefficients'element'length);
+--         Result_valid <= '1';
+--         accum <= (others => '0'); -- Reset accumulator
+--       end if;
+--     end if;
+--   end process;
+
+--   shift_en <= Data_valid and not data_valid_dly;
+
+-- end architecture;
 
 
 

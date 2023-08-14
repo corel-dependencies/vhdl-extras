@@ -115,7 +115,7 @@ package strings_maps is
   --#  sequence: String of characters to build into a set
   --# Returns:
   --#  A character set with all unique characters from sequence.
-  function to_set( sequence : character_sequence ) return character_set;
+  -- function to_set( sequence : character_sequence ) return character_set;
   
   --## Convert a character into a set.
   --# Args:
@@ -267,15 +267,15 @@ package body strings_maps is
 
 
   --## Convert a character sequence to a set
-  function to_set( sequence : character_sequence ) return character_set is
-    variable result : character_set := null_set;
-  begin
-    for i in sequence'range loop
-      result(sequence(i)) := true;
-    end loop;
+  -- function to_set( sequence : character_sequence ) return character_set is
+  --   variable result : character_set := null_set;
+  -- begin
+  --   for i in sequence'range loop
+  --     result(sequence(i)) := true;
+  --   end loop;
 
-    return result;
-  end function;
+  --   return result;
+  -- end function;
 
   --## Convert a single character to a set
   function to_set( singleton : character ) return character_set is

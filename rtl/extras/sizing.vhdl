@@ -160,8 +160,8 @@ package sizing is
   --#   extension: Bit used for extension
   --# Returns:
   --#   Resized vector.
-  function change_size (s : std_logic_vector; new_size : positive; method : resize_method;
-    extension : std_ulogic := '0' ) return std_logic_vector;
+  -- function change_size (s : std_logic_vector; new_size : positive; method : resize_method;
+  --   extension : std_ulogic := '0' ) return std_logic_vector;
     
   --## Resizizng function for unsigned number clearly stating how exactly the 
   --# resizing will be done. Extends numbers with zeros.
@@ -301,12 +301,12 @@ package body sizing is
 
   --## Resizizng function for std_logic_vector clearly stating how exactly the 
   --# resizing will be done.
-  function change_size (s : std_logic_vector; new_size : positive; method : resize_method;
-    extension : std_ulogic := '0' ) return std_logic_vector is
-  begin
-    return std_logic_vector(
-      change_size(std_ulogic_vector(s), new_size, method, extension));
-  end function;
+  -- function change_size (s : std_logic_vector; new_size : positive; method : resize_method;
+  --   extension : std_ulogic := '0' ) return std_logic_vector is
+  -- begin
+  --   return std_logic_vector(
+  --     change_size(std_ulogic_vector(s), new_size, method, extension));
+  -- end function;
   
   --## Resizizng function for unsigned number clearly stating how exactly the 
   --# resizing will be done. Extends numbers with zeros.
