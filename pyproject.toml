@@ -1,0 +1,17 @@
+[build-system]
+requires = ["setuptools>=45", "setuptools_scm>=6.2"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "vhdl_extras"
+version = "0.1.0"
+dependencies = ["tsfpga"]
+
+[tool.setuptools]
+include-package-data = false
+
+[tool.setuptools.packages]
+find = {include = ["vhdl_extras*"]}
+
+[tool.setuptools.package-data]
+"*" = ["*.vhd", "*.tcl", "*.vhdl"]
