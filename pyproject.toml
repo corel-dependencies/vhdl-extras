@@ -13,3 +13,6 @@ dependencies = [
 ]
 [tool.setuptools.packages]
 find = {}
+
+[tool.setuptools.package-data]
+"rtl" = ["extras/*.vhdl", "extras_2008/*.vhdl"]
