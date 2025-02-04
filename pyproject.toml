@@ -10,7 +10,6 @@ requires-python = ">=3.9"
 license = {file = "COPYING"}
 dependencies = [
     "tsfpga",
-    "corel_modules"
 ]
 [tool.setuptools.packages]
 find = {}
