@@ -155,12 +155,14 @@ package common is
   --#  Array with new type.
   function to_u_unsigned_array(A : sulv_array) return u_unsigned_array;
 
+  -- synthesis translate_off
   --## Convert unresolved_unsigned array to std_ulogic_vector array.
   --# Args:
   --#  A: Array to convert
   --# Returns:
   --#  Array with new type.
   function to_sulv_array(A : u_unsigned_array) return sulv_array;
+  -- synthesis translate_on
 
   --## Convert std_logic_vector array to unresolved_unsigned array.
   --# Args:
@@ -451,6 +453,9 @@ package body common is
     return r;
   end function;
 
+  -- synthesis translate_off
+  -- ERROR: [Synth 8-318] illegal unconstrained array declaration 'a' in Vivado
+  -- 2023.1
   function to_sulv_array(a : u_unsigned_array) return sulv_array is
     variable r : sulv_array(a'range)(a'element'range);
   begin
@@ -459,6 +464,7 @@ package body common is
     end loop;
     return r;
   end function;
+  -- synthesis translate_on
 
 
 

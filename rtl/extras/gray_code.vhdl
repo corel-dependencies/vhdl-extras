@@ -76,7 +76,7 @@ package gray_code is
   --#  Binary: Binary value
   --# Returns:
   --#  Gray-coded vector.
-  function to_gray( Binary : std_logic_vector )  return std_logic_vector;
+  -- function to_gray( Binary : std_logic_vector )  return std_logic_vector;
   
   --## Convert binary to Gray code.
   --# Args:
@@ -97,7 +97,7 @@ package gray_code is
   --#  Binary: Gray-coded value
   --# Returns:
   --#  Decoded binary value.
-  function to_binary( Gray : std_logic_vector )  return std_logic_vector;
+  -- function to_binary( Gray : std_logic_vector )  return std_logic_vector;
   
   --## Convert Gray code to binary.
   --# Args:
@@ -143,10 +143,10 @@ package body gray_code is
     return result;
   end function;
 
-  function to_gray( Binary : std_logic_vector ) return std_logic_vector is
-  begin
-    return to_stdlogicvector(to_gray(to_stdulogicvector(Binary)));
-  end function;
+  -- function to_gray( Binary : std_logic_vector ) return std_logic_vector is
+  -- begin
+  --   return to_stdlogicvector(to_gray(to_stdulogicvector(Binary)));
+  -- end function;
 
   function to_gray( Binary : unsigned ) return unsigned is
   begin
@@ -170,10 +170,10 @@ package body gray_code is
     return result;
   end function;
 
-  function to_binary( Gray : std_logic_vector ) return std_logic_vector is
-  begin
-    return to_stdlogicvector(to_binary(to_stdulogicvector(Gray)));
-  end function;
+  -- function to_binary( Gray : std_logic_vector ) return std_logic_vector is
+  -- begin
+  --   return to_stdlogicvector(to_binary(to_stdulogicvector(Gray)));
+  -- end function;
 
   function to_binary( Gray : unsigned ) return unsigned is
   begin
