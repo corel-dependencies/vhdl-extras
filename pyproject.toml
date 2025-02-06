@@ -15,7 +15,7 @@ dependencies = ["tsfpga"]
 include-package-data = false
 
 [tool.setuptools.packages]
-find = {include = ["vhdl_extras*"]}
+find = {include = ["vhdl_extras*", "rtl*"]}
 
 [tool.setuptools.package-data]
 "*" = ["*.vhd", "*.tcl", "*.vhdl"]
