@@ -36,7 +36,10 @@ class Module(BaseModule):
                     files_avoid=files_avoid,
             )]
 
+    def get_simulation_files(self, **kwargs):
+        files = super().get_simulation_files(**kwargs)
+        # do a final sweep to drop the Xilinx package by name
+        return [f for f in files if f.path.name != "timing_ops_xilinx.vhdl"]
 
 if __name__ == "__main__":
-    m = Module()
-    print(m.get_synthesis_files())
+    m = Module(Path(), library_name='extras')
